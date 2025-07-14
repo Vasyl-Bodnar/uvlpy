@@ -4,7 +4,7 @@ import uuid
 import shutil
 
 
-def to_uv(name, val, deps=[], build=True):
+def to_uv(name: str, val: int, deps=[], build=True):
     dirname = name + "-" + str(val)
     full_dirname = os.path.join(dirname, "src", name) if build else dirname
     if not os.path.isdir(dirname):
@@ -55,7 +55,7 @@ class Constraint:
 
 
 class Var:
-    range: list
+    range: list[tuple]
 
     def __init__(self, range):
         self.name = uuid.uuid4().hex
@@ -110,12 +110,14 @@ class Var:
 
 
 class System:
-    vars: list[Var] = []
-    constrs: list[Constraint] = []
+    vars: list[Var]
+    constrs: list[Constraint]
     keep_work: bool
     done_work: bool
 
     def __init__(self, keep_work=False):
+        self.vars = []
+        self.constrs = []
         self.keep_work = keep_work
         self.done_work = False
 
@@ -160,6 +162,7 @@ class System:
             print("Impossible to solve")
             return False
 
+        res = True
         if args:
             res = []
             with open(os.path.join("result-0.1", "uv.lock"), "r") as f:
@@ -173,17 +176,11 @@ class System:
                         # rather than it never existing to begin with
                         res.append("Any")
 
-            os.chdir("..")
-            if not self.keep_work:
-                self.done_work = True
-                shutil.rmtree("work")
-            return res
-
         os.chdir("..")
         if not self.keep_work:
             self.done_work = True
             shutil.rmtree("work")
-        return True
+        return res
 
     def clear(self):
         self.vars = []

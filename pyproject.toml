@@ -1,6 +1,6 @@
 [project]
 name = "uvlpy"
-version = "0.1.0"
+version = "0.1.1"
 description = "UV abused for your pleasure"
 readme = "README.md"
 license = "BSD-3-Clause"
@@ -15,4 +15,4 @@ requires-python = ">=3.10"
 dependencies = []
 
 [project.urls]
-Homepage = ""
+Homepage = "https://github.com/Vasyl-Bodnar/uvlpy"
