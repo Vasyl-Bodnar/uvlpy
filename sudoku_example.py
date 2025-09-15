@@ -1,6 +1,7 @@
 import math
 from uvlpy.uvlpy import System
 
+
 def transpose(lst):
     """Assumes square input"""
     res = lst.copy()
@@ -23,7 +24,7 @@ def draw_board(lst):
 
 
 def main():
-    sys = System(keep_work=False)
+    sys = System(keep_work=False, output_work=False)
     sudoku = sys.make_vars(*([list(range(1, 10))] * 81))
     for i in range(1, 10):
         for j in range(0, 9):

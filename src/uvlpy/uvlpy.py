@@ -113,12 +113,14 @@ class System:
     vars: list[Var]
     constrs: list[Constraint]
     keep_work: bool
+    output_work: bool
     done_work: bool
 
-    def __init__(self, keep_work=False):
+    def __init__(self, keep_work=False, output_work=False):
         self.vars = []
         self.constrs = []
         self.keep_work = keep_work
+        self.output_work = output_work
         self.done_work = False
 
     def make_vars(self, *args):
@@ -141,8 +143,8 @@ class System:
                     proc = subprocess.run(
                         ["uv", "build", "-o", ".."],
                         cwd=v.name + "-" + str(val),
-                        stdout=None,
-                        stderr=None,
+                        stdout=None if self.output_work else subprocess.DEVNULL,
+                        stderr=None if self.output_work else subprocess.DEVNULL,
                     )
                     if proc.returncode != 0:
                         print("Failed to construct a variable")
@@ -154,8 +156,8 @@ class System:
         proc = subprocess.run(
             ["uv", "lock", "--find-links", ".."],
             cwd="result-0.1",
-            stdout=None,
-            stderr=None,
+            stdout=None if self.output_work else subprocess.DEVNULL,
+            stderr=None if self.output_work else subprocess.DEVNULL,
         )
 
         if proc.returncode != 0:
